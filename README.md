@@ -33,8 +33,8 @@ This toolkit is specifically tuned for DevOps operations:
 git-compliance-shared/
 ├── .github/
 │   └── workflows/
-│       ├── pipeline-ci.yml      # Automated workflow testing the configs
-│       └── renovate-validator.yml # Validates Renovate configuration
+│       ├── ci.yml               # Unified CI (Compliance & Renovate validation)
+│       └── renovate.yml         # Automated Renovate Bot execution
 ├── .gitleaksignore              # Global baseline secret scanner ignore file
 ├── commitlint.config.js         # Your TICKET: type() no-colon regex engine
 ├── gitleaks.toml                # Your custom corporate secret signatures

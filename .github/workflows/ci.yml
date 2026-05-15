@@ -1,10 +1,10 @@
-# FILE_NAME: pipeline-ci.yml
-# DESCRIPTION: Automated testing framework for validating compliance configurations.
-# VERSION: 1.0.1
+# FILE_NAME: ci.yml
+# DESCRIPTION: Unified CI pipeline for validating compliance and Renovate configurations.
+# VERSION: 1.0.0
 # EXIT_CODES/SIGNALS: 0 on success, 1 on failure.
 # AUTHORS: Vyom Platform Team
 
-name: Shared Compliance Testing Framework
+name: CI
 
 on:
   pull_request:
@@ -20,7 +20,8 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
-  validate-configs:
+  validate-compliance:
+    name: Validate Compliance Configs
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Source Context
@@ -52,3 +53,15 @@ jobs:
         with:
           script: |
             console.log("Evaluating onboarding deployment automation script layout...");
+
+  validate-renovate:
+    name: Validate Renovate Config
+    runs-on: ubuntu-latest
+    # [T-06] Only run if renovate.json or relevant workflows changed.
+    if: github.event_name == 'push' || contains(github.event.pull_request.labels.*.name, 'renovate') || github.event.pull_request.changed_files > 0
+    steps:
+      - name: Checkout Source Context
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Validate Renovate Config
+        run: npx --package renovate -c renovate-config-validator
