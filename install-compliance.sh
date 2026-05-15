@@ -24,24 +24,24 @@ if [ "$ARCH_TYPE" = "aarch64" ] || [ "$ARCH_TYPE" = "arm64" ]; then ARCH_TYPE="a
 
 # [T-02] System Verification Checklist
 # _log("[T-02] Checking for required dependencies.")
-if ! command -v git &> /dev/null; then echo "❌ Error: git is required."; exit 1; fi
-if ! command -v python3 &> /dev/null; then echo "❌ Error: python3 is required."; exit 1; fi
-if ! command -v node &> /dev/null; then echo "❌ Error: Node.js/NPM is required."; exit 1; fi
+if ! command -v git &> /dev/null; then echo "Error: git is required."; exit 1; fi
+if ! command -v python3 &> /dev/null; then echo "Error: python3 is required."; exit 1; fi
+if ! command -v node &> /dev/null; then echo "Error: Node.js/NPM is required."; exit 1; fi
 
 # Optional but recommended DevOps tools
 for tool in tflint hadolint kube-linter; do
     if ! command -v "$tool" &> /dev/null; then
-        echo "⚠️  Warning: $tool is missing. Some specialized DevOps hooks may run slower via Docker/auto-install."
+        echo "Warning: $tool is missing. Some specialized DevOps hooks may run slower via Docker/auto-install."
     fi
 done
 
 # [T-03] Setup Framework Managers
-echo "📦 Installing/Updating official pre-commit and checkov core engines..."
+echo "Installing/Updating official pre-commit and checkov core engines..."
 python3 -m pip install --upgrade --user pre-commit checkov
 
 # [T-04] Secure Gitleaks Engine Installation
 if ! command -v gitleaks &> /dev/null; then
-    echo "🔑 Gitleaks binary missing. Pulling official execution engine..."
+    echo "Gitleaks binary missing. Pulling official execution engine..."
     if [ "$OS_TYPE" = "darwin" ] && command -v brew &> /dev/null; then
         brew install gitleaks
     else
@@ -55,7 +55,7 @@ fi
 
 # [T-05] Sync All Configuration Rules From Central Repo
 mkdir -p "$GLOBAL_HOOKS_DIR/hooks"
-echo "📥 Syncing master configuration files from central repository..."
+echo "Syncing master configuration files from central repository..."
 CENTRAL_REPO_URL="https://raw.githubusercontent.com/your-org/git-compliance-shared/main"
 
 curl -sSf "$CENTRAL_REPO_URL/master-pre-commit-config.yaml" -o "$GLOBAL_HOOKS_DIR/pre-commit-config.yaml"
@@ -90,10 +90,10 @@ EOF
 chmod +x "$GLOBAL_HOOKS_DIR/hooks/commit-msg"
 
 # [T-08] Bind Git Globally
-echo "⚙️  Binding global Git hook pathways..."
+echo "Binding global Git hook pathways..."
 git config --global core.hooksPath "$GLOBAL_HOOKS_DIR/hooks"
 
 echo "================================================================="
-echo "✅ SUCCESS: Global Git Quality Gates & Rulesets Active!"
+echo "SUCCESS: Global Git Quality Gates & Rulesets Active!"
 echo "   Formats allowed: TICKET: type() message OR TICKET: type(scope) message"
 echo "================================================================="

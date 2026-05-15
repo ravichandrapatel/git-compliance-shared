@@ -1,8 +1,8 @@
-# 🏢 Global Git Compliance & Quality Gates
+# Global Git Compliance & Quality Gates
 
 This repository centralizes and maintains our enterprise-wide code quality linters, security scanners, and commit format definitions.
 
-## 🚀 Instant Local Installation
+## Instant Local Installation
 
 To apply these standard formatting and policy configurations to **every repository on your machine** (including existing directories and newly cloned footprints), execute this single command in your terminal:
 
@@ -10,7 +10,7 @@ To apply these standard formatting and policy configurations to **every reposito
 curl -sSf https://raw.githubusercontent.com/<your-org>/git-compliance-shared/main/install-compliance.sh | bash
 ```
 
-## 📐 Supported Commit Layout
+## Supported Commit Layout
 
 Every commit message is dynamically validated against our ticketing system using `commitlint`. Commits **must** match one of the following variations (omitting the traditional trailing type colon):
 
@@ -18,7 +18,7 @@ Every commit message is dynamically validated against our ticketing system using
 * `INC002911: fix(api) resolved memory exhaustion errors`
 * `DCDT881: chore(infra) realigned deployment hooks`
 
-## 🛠 DevOps Engineering Features
+## DevOps Engineering Features
 
 This toolkit is specifically tuned for DevOps operations:
 - **IaC Security**: Checkov and TFLint for Terraform and Kubernetes.
@@ -27,7 +27,7 @@ This toolkit is specifically tuned for DevOps operations:
 - **Secret Protection**: Gitleaks with custom corporate signatures.
 - **Global Enforcement**: Single installation protects every repository on your machine.
 
-## 🛠 Repository Structure
+## Repository Structure
 
 ```text
 git-compliance-shared/
@@ -43,14 +43,14 @@ git-compliance-shared/
 └── README.md                    # Onboarding execution instructions
 ```
 
-## 🛡 Security & Compliance
+## Security & Compliance
 
 This repository is aligned with **OWASP SPVS v1.0**. All changes to the `main` branch require:
 - Pull Request with at least 1 approval.
 - Passing `validate-configs` status check.
 - Signed commits.
 
-## 🤖 Dependency Management
+## Dependency Management
 
 We use automated tools to keep our dependencies and hooks up to date:
 - **Dependabot**: Monitors GitHub Actions and NPM dependencies.
