@@ -1,0 +1,26 @@
+# FILE_NAME: gitleaks.toml
+# DESCRIPTION: Custom corporate secret signatures and rules for Gitleaks.
+# VERSION: 1.0.0
+# AUTHORS: Vyom Platform Team
+
+# [T-01] Defining Gitleaks configuration for secret scanning.
+
+[allowlist]
+description = "Global allowlist for Gitleaks"
+paths = [
+    '''\.gitleaksignore$''',
+    '''README\.md$'''
+]
+
+[[rules]]
+description = "Generic Secret"
+id = "generic-secret"
+regex = '''(?i)secret|password|passwd|api_key|apikey|auth_token|token'''
+entropy = 3.5
+keywords = ["secret", "password", "passwd", "api_key", "apikey", "auth_token", "token"]
+
+[[rules]]
+description = "AWS Access Key"
+id = "aws-access-key"
+regex = '''(A3T[A-Z0-9]|AKIA|AGPA|AIDA|AROA|AIPA|ANPA|ANVA|ASIA)[A-Z0-9]{16}'''
+keywords = ["akia", "agpa", "aida", "aroa", "aipa", "anpa", "anva", "asia"]

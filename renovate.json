@@ -1,0 +1,23 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "Renovate configuration for git-compliance-shared",
+  "extends": [
+    "config:base",
+    ":rebaseStalePrs",
+    ":enableHelpfulPreCheck",
+    "group:allNonMajor"
+  ],
+  "packageRules": [
+    {
+      "matchPackageNames": ["*"],
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "automerge": true
+    }
+  ],
+  "github-actions": {
+    "enabled": true
+  },
+  "pre-commit": {
+    "enabled": true
+  }
+}

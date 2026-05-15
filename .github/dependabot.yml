@@ -1,0 +1,24 @@
+# FILE_NAME: dependabot.yml
+# DESCRIPTION: Dependabot configuration for automated dependency updates.
+# VERSION: 1.0.0
+# AUTHORS: Vyom Platform Team
+
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      npm-dependencies:
+        patterns:
+          - "*"

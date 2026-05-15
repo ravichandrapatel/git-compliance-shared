@@ -1,0 +1,120 @@
+# FILE_NAME: master-pre-commit-config.yaml
+# DESCRIPTION: Unified pre-commit configuration for enterprise-wide code quality and security.
+# VERSION: 1.2.0
+# AUTHORS: Vyom Platform Team
+
+# [T-01] Defining pre-commit hooks for security and quality gates.
+
+default_stages: [pre-commit]
+repos:
+  # =========================================================================
+  # 1. SECURITY & SECRET LEAK PREVENTION (LOCAL SYSTEM BINARY + CUSTOM TOML)
+  # =========================================================================
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.18.2
+    hooks:
+      - id: gitleaks-system
+        name: gitleaks
+        # Instructs the local gitleaks binary to parse against your centralized custom ruleset
+        entry: gitleaks protect --staged --verbose --redact --config "$HOME/.git-global-compliance/gitleaks.toml"
+
+  # =========================================================================
+  # 2. IACO & MANIFEST COMPLIANCE (CHECKOV COMPLIANCE SCANS)
+  # =========================================================================
+  - repo: https://github.com/bridgecrewio/checkov
+    rev: 3.2.348
+    hooks:
+      - id: checkov
+        name: checkov (Cloud & Pipeline Infrastructure Security)
+        files: \.(tf|yml|yaml)$
+        args: ["--framework", "terraform", "kubernetes", "github_actions", "--soft-fail"]
+
+  # =========================================================================
+  # 3. PIPELINE ORCHESTRATION LINTERS (MONOREPO COMPLIANT)
+  # =========================================================================
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.7
+    hooks:
+      - id: actionlint
+        name: actionlint (Workflows & Monorepo Custom Actions)
+        # Tracks root workflows, global actions, and deeply nested workspace actions
+        files: ^\.github/workflows/|^([^/]+/)*\.github/actions/|^actions/
+        types: [yaml]
+
+  - repo: https://github.com/IBM/tekton-lint
+    rev: v0.4.0
+    hooks:
+      - id: tekton-lint
+        name: tekton-lint
+        files: ^(tekton|pipelines|tasks)/.*\.yaml$
+
+  # =========================================================================
+  # 4. SHELL CODE STATIC ANALYSIS (OFFICIAL UPSTREAM MIRROR)
+  # =========================================================================
+  - repo: https://github.com/pre-commit/mirrors-shellcheck
+    rev: v0.10.0.1
+    hooks:
+      - id: shellcheck
+        args: ["--severity=warning"]
+
+  # =========================================================================
+  # 5. TERRAFORM FORMAT & SYNTAX VALIDATION (OFFICIAL CORE NATIVE)
+  # =========================================================================
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.96.1
+    hooks:
+      - id: terraform_fmt
+      - id: terraform_tflint
+      - id: terraform_validate
+        args:
+          - --init-args=-backend=false
+
+  # =========================================================================
+  # 6. CONTAINER & KUBERNETES COMPLIANCE (DEVOPS SPECIALIZED)
+  # =========================================================================
+  - repo: https://github.com/hadolint/hadolint
+    rev: v2.12.0
+    hooks:
+      - id: hadolint
+        name: hadolint (Dockerfile Best Practices)
+
+  - repo: https://github.com/stackrox/kube-linter
+    rev: v0.6.8
+    hooks:
+      - id: kube-linter
+        name: kube-linter (Kubernetes Security & Ops)
+
+  # =========================================================================
+  # 7. PYTHON FORMAT & QUALITY PIPELINES
+  # =========================================================================
+  - repo: https://github.com/psf/black
+    rev: 24.4.2
+    hooks:
+      - id: black
+
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.0.0
+    hooks:
+      - id: flake8
+
+  # =========================================================================
+  # 7. GENERAL MANIFEST STRUCTURAL FILE CHECKERS
+  # =========================================================================
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+        args: [--allow-multiple-documents]
+      - id: check-added-large-files
+
+  # =========================================================================
+  # 8. COMMIT MESSAGE VALIDATION (OFFICIAL CONVENTIONAL COMMITLINT)
+  # =========================================================================
+  - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
+    rev: v9.16.0
+    hooks:
+      - id: commitlint
+        stages: [commit-msg]
+        additional_dependencies: ['@commitlint/config-conventional']
