@@ -26,7 +26,7 @@ jobs:
 
       - name: Setup System Python
         # [T-02] Setting up Python environment for pre-commit validation.
-        uses: actions/setup-python@f67e240f284c374f24b26d15c730428645b30db5 # v5.3.0
+        uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
         with:
           python-version: '3.11'
 
@@ -38,7 +38,7 @@ jobs:
 
       - name: Execute Self Gitleaks Scan
         # [T-04] Running Gitleaks to scan for secrets in the repository.
-        uses: gitleaks/gitleaks-action@f69aefaf0737a4073380b063ee40ddf667468579 # v2.3.7
+        uses: gitleaks/gitleaks-action@83373cf2f8c4db6e24b41c1a9b086bb9619e9cd3 # v2.3.7
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
