@@ -1,11 +1,7 @@
 # FILE_NAME: .gitleaksignore
 # DESCRIPTION: Global baseline secret scanner ignore file.
-# VERSION: 1.0.0
+# VERSION: 1.0.1
 # AUTHORS: Vyom Platform Team
 
-# [T-01] Listing files and patterns to be ignored by Gitleaks.
-
-# Ignore example files in documentation
-docs/examples/*
-# Ignore test data
-tests/data/*
+# [T-01] Listing specific leak fingerprints to be ignored by Gitleaks.
+# Path-based ignores should be placed in gitleaks.toml under [allowlist].

@@ -1,6 +1,6 @@
 # FILE_NAME: ci.yml
 # DESCRIPTION: Unified CI pipeline for validating compliance and Renovate configurations.
-# VERSION: 1.0.0
+# VERSION: 1.0.1
 # EXIT_CODES/SIGNALS: 0 on success, 1 on failure.
 # AUTHORS: Vyom Platform Team
 
@@ -25,8 +25,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Source Context
-        # [T-01] Checking out the repository source code.
+        # [T-01] Checking out the repository source code with full history for Gitleaks.
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
 
       - name: Setup System Python
         # [T-02] Setting up Python environment for pre-commit validation.
