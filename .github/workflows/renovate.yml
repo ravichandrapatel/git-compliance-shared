@@ -1,0 +1,36 @@
+# FILE_NAME: renovate.yml
+# DESCRIPTION: Automated dependency updates using Renovate Bot (Action mode).
+# VERSION: 1.0.0
+# EXIT_CODES/SIGNALS: 0 on success, 1 on failure.
+# AUTHORS: Vyom Platform Team
+
+name: Renovate
+
+on:
+  workflow_dispatch:
+  schedule:
+    # [T-01] Running Renovate every Monday at 00:00 UTC.
+    - cron: '0 0 * * 1'
+  push:
+    branches: [ main ]
+    paths:
+      - 'renovate.json'
+      - '.github/workflows/renovate.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  renovate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Context
+        # [T-02] Checking out the repository source code.
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Self-hosted Renovate
+        # [T-03] Executing Renovate Bot to scan and update dependencies.
+        uses: renovatebot/github-action@02f4f1597993d567d189077d8ad68fb999f1abc7 # v41.0.14
+        with:
+          configurationFile: renovate.json
+          token: ${{ secrets.RENOVATE_TOKEN || secrets.GITHUB_TOKEN }}
