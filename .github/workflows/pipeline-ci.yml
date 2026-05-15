@@ -16,6 +16,9 @@ permissions:
   contents: read
   security-events: write
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   validate-configs:
     runs-on: ubuntu-latest
@@ -41,8 +44,7 @@ jobs:
         uses: gitleaks/gitleaks-action@83373cf2f8c4db6e24b41c1a9b086bb9619e9cd3 # v2.3.7
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          config-path: gitleaks.toml
+          GITLEAKS_CONFIG: gitleaks.toml
 
       - name: Run ShellCheck Mirror
         # [T-05] Evaluating onboarding deployment automation script layout.
